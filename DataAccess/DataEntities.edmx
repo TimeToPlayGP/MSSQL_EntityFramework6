@@ -1,0 +1,381 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище projectDataModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="companyCustomer">
+          <Key>
+            <PropertyRef Name="comCID" />
+          </Key>
+          <Property Name="comCID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="address" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="companyPerformer">
+          <Key>
+            <PropertyRef Name="comPID" />
+          </Key>
+          <Property Name="comPID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="address" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" />
+          <Property Name="WebSite" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="employee">
+          <Key>
+            <PropertyRef Name="empID" />
+          </Key>
+          <Property Name="empID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="surname" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="middlename " Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="project">
+          <Key>
+            <PropertyRef Name="projID" />
+          </Key>
+          <Property Name="projID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="dateStart" Type="date" Nullable="false" />
+          <Property Name="dateFinish" Type="date" Nullable="false" />
+          <Property Name="priority" Type="int" Nullable="false" />
+          <Property Name="comment" Type="text" />
+          <Property Name="id_projM" Type="int" Nullable="false" />
+          <Property Name="id_comP" Type="int" Nullable="false" />
+          <Property Name="id_comC" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="projectEmployee">
+          <Key>
+            <PropertyRef Name="id_proj" />
+            <PropertyRef Name="id_comP" />
+          </Key>
+          <Property Name="id_proj" Type="int" Nullable="false" />
+          <Property Name="id_comP" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="projectManager">
+          <Key>
+            <PropertyRef Name="pmID" />
+          </Key>
+          <Property Name="pmID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="surname" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="middlename " Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK__project__id_comC__440B1D61">
+          <End Role="companyCustomer" Type="Self.companyCustomer" Multiplicity="1" />
+          <End Role="project" Type="Self.project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="companyCustomer">
+              <PropertyRef Name="comCID" />
+            </Principal>
+            <Dependent Role="project">
+              <PropertyRef Name="id_comC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__project__id_comP__4316F928">
+          <End Role="companyPerformer" Type="Self.companyPerformer" Multiplicity="1" />
+          <End Role="project" Type="Self.project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="companyPerformer">
+              <PropertyRef Name="comPID" />
+            </Principal>
+            <Dependent Role="project">
+              <PropertyRef Name="id_comP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__project__id_proj__4222D4EF">
+          <End Role="projectManager" Type="Self.projectManager" Multiplicity="1" />
+          <End Role="project" Type="Self.project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="projectManager">
+              <PropertyRef Name="pmID" />
+            </Principal>
+            <Dependent Role="project">
+              <PropertyRef Name="id_projM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__projectEm__id_co__5629CD9C">
+          <End Role="employee" Type="Self.employee" Multiplicity="1" />
+          <End Role="projectEmployee" Type="Self.projectEmployee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="employee">
+              <PropertyRef Name="empID" />
+            </Principal>
+            <Dependent Role="projectEmployee">
+              <PropertyRef Name="id_comP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__projectEm__id_pr__5535A963">
+          <End Role="project" Type="Self.project" Multiplicity="1" />
+          <End Role="projectEmployee" Type="Self.projectEmployee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="project">
+              <PropertyRef Name="projID" />
+            </Principal>
+            <Dependent Role="projectEmployee">
+              <PropertyRef Name="id_proj" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище projectDataModelContainer">
+          <EntitySet Name="companyCustomer" EntityType="Self.companyCustomer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="companyPerformer" EntityType="Self.companyPerformer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="employee" EntityType="Self.employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="project" EntityType="Self.project" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="projectEmployee" EntityType="Self.projectEmployee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="projectManager" EntityType="Self.projectManager" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__project__id_comC__440B1D61" Association="Self.FK__project__id_comC__440B1D61">
+            <End Role="companyCustomer" EntitySet="companyCustomer" />
+            <End Role="project" EntitySet="project" />
+          </AssociationSet>
+          <AssociationSet Name="FK__project__id_comP__4316F928" Association="Self.FK__project__id_comP__4316F928">
+            <End Role="companyPerformer" EntitySet="companyPerformer" />
+            <End Role="project" EntitySet="project" />
+          </AssociationSet>
+          <AssociationSet Name="FK__project__id_proj__4222D4EF" Association="Self.FK__project__id_proj__4222D4EF">
+            <End Role="projectManager" EntitySet="projectManager" />
+            <End Role="project" EntitySet="project" />
+          </AssociationSet>
+          <AssociationSet Name="FK__projectEm__id_co__5629CD9C" Association="Self.FK__projectEm__id_co__5629CD9C">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="projectEmployee" EntitySet="projectEmployee" />
+          </AssociationSet>
+          <AssociationSet Name="FK__projectEm__id_pr__5535A963" Association="Self.FK__projectEm__id_pr__5535A963">
+            <End Role="project" EntitySet="project" />
+            <End Role="projectEmployee" EntitySet="projectEmployee" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="projectDataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="companyCustomer">
+          <Key>
+            <PropertyRef Name="comCID" />
+          </Key>
+          <Property Name="comCID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="project" Relationship="Self.FK__project__id_comC__440B1D61" FromRole="companyCustomer" ToRole="project" />
+        </EntityType>
+        <EntityType Name="companyPerformer">
+          <Key>
+            <PropertyRef Name="comPID" />
+          </Key>
+          <Property Name="comPID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WebSite" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="project" Relationship="Self.FK__project__id_comP__4316F928" FromRole="companyPerformer" ToRole="project" />
+        </EntityType>
+        <EntityType Name="employee">
+          <Key>
+            <PropertyRef Name="empID" />
+          </Key>
+          <Property Name="empID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="surname" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="middlename_" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="project" Relationship="Self.projectEmployee" FromRole="employee" ToRole="project" />
+        </EntityType>
+        <EntityType Name="project">
+          <Key>
+            <PropertyRef Name="projID" />
+          </Key>
+          <Property Name="projID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="dateStart" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="dateFinish" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="priority" Type="Int32" Nullable="false" />
+          <Property Name="comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="id_projM" Type="Int32" Nullable="false" />
+          <Property Name="id_comP" Type="Int32" Nullable="false" />
+          <Property Name="id_comC" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="companyCustomer" Relationship="Self.FK__project__id_comC__440B1D61" FromRole="project" ToRole="companyCustomer" />
+          <NavigationProperty Name="companyPerformer" Relationship="Self.FK__project__id_comP__4316F928" FromRole="project" ToRole="companyPerformer" />
+          <NavigationProperty Name="projectManager" Relationship="Self.FK__project__id_proj__4222D4EF" FromRole="project" ToRole="projectManager" />
+          <NavigationProperty Name="employee" Relationship="Self.projectEmployee" FromRole="project" ToRole="employee" />
+        </EntityType>
+        <EntityType Name="projectManager">
+          <Key>
+            <PropertyRef Name="pmID" />
+          </Key>
+          <Property Name="pmID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="surname" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="middlename_" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="project" Relationship="Self.FK__project__id_proj__4222D4EF" FromRole="projectManager" ToRole="project" />
+        </EntityType>
+        <Association Name="FK__project__id_comC__440B1D61">
+          <End Role="companyCustomer" Type="Self.companyCustomer" Multiplicity="1" />
+          <End Role="project" Type="Self.project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="companyCustomer">
+              <PropertyRef Name="comCID" />
+            </Principal>
+            <Dependent Role="project">
+              <PropertyRef Name="id_comC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__project__id_comP__4316F928">
+          <End Role="companyPerformer" Type="Self.companyPerformer" Multiplicity="1" />
+          <End Role="project" Type="Self.project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="companyPerformer">
+              <PropertyRef Name="comPID" />
+            </Principal>
+            <Dependent Role="project">
+              <PropertyRef Name="id_comP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__project__id_proj__4222D4EF">
+          <End Role="projectManager" Type="Self.projectManager" Multiplicity="1" />
+          <End Role="project" Type="Self.project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="projectManager">
+              <PropertyRef Name="pmID" />
+            </Principal>
+            <Dependent Role="project">
+              <PropertyRef Name="id_projM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="projectEmployee">
+          <End Role="employee" Type="Self.employee" Multiplicity="*" />
+          <End Role="project" Type="Self.project" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="projectDataConnections" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="companyCustomer" EntityType="Self.companyCustomer" />
+          <EntitySet Name="companyPerformer" EntityType="Self.companyPerformer" />
+          <EntitySet Name="employee" EntityType="Self.employee" />
+          <EntitySet Name="project" EntityType="Self.project" />
+          <EntitySet Name="projectManager" EntityType="Self.projectManager" />
+          <AssociationSet Name="FK__project__id_comC__440B1D61" Association="Self.FK__project__id_comC__440B1D61">
+            <End Role="companyCustomer" EntitySet="companyCustomer" />
+            <End Role="project" EntitySet="project" />
+          </AssociationSet>
+          <AssociationSet Name="FK__project__id_comP__4316F928" Association="Self.FK__project__id_comP__4316F928">
+            <End Role="companyPerformer" EntitySet="companyPerformer" />
+            <End Role="project" EntitySet="project" />
+          </AssociationSet>
+          <AssociationSet Name="FK__project__id_proj__4222D4EF" Association="Self.FK__project__id_proj__4222D4EF">
+            <End Role="projectManager" EntitySet="projectManager" />
+            <End Role="project" EntitySet="project" />
+          </AssociationSet>
+          <AssociationSet Name="projectEmployee" Association="Self.projectEmployee">
+            <End Role="employee" EntitySet="employee" />
+            <End Role="project" EntitySet="project" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище projectDataModelContainer" CdmEntityContainer="projectDataConnections">
+          <EntitySetMapping Name="companyCustomer">
+            <EntityTypeMapping TypeName="projectDataModel.companyCustomer">
+              <MappingFragment StoreEntitySet="companyCustomer">
+                <ScalarProperty Name="comCID" ColumnName="comCID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="companyPerformer">
+            <EntityTypeMapping TypeName="projectDataModel.companyPerformer">
+              <MappingFragment StoreEntitySet="companyPerformer">
+                <ScalarProperty Name="comPID" ColumnName="comPID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="WebSite" ColumnName="WebSite" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="employee">
+            <EntityTypeMapping TypeName="projectDataModel.employee">
+              <MappingFragment StoreEntitySet="employee">
+                <ScalarProperty Name="empID" ColumnName="empID" />
+                <ScalarProperty Name="surname" ColumnName="surname" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="middlename_" ColumnName="middlename " />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="project">
+            <EntityTypeMapping TypeName="projectDataModel.project">
+              <MappingFragment StoreEntitySet="project">
+                <ScalarProperty Name="projID" ColumnName="projID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="dateStart" ColumnName="dateStart" />
+                <ScalarProperty Name="dateFinish" ColumnName="dateFinish" />
+                <ScalarProperty Name="priority" ColumnName="priority" />
+                <ScalarProperty Name="comment" ColumnName="comment" />
+                <ScalarProperty Name="id_projM" ColumnName="id_projM" />
+                <ScalarProperty Name="id_comP" ColumnName="id_comP" />
+                <ScalarProperty Name="id_comC" ColumnName="id_comC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="projectManager">
+            <EntityTypeMapping TypeName="projectDataModel.projectManager">
+              <MappingFragment StoreEntitySet="projectManager">
+                <ScalarProperty Name="pmID" ColumnName="pmID" />
+                <ScalarProperty Name="surname" ColumnName="surname" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="middlename_" ColumnName="middlename " />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="projectEmployee" TypeName="projectDataModel.projectEmployee" StoreEntitySet="projectEmployee">
+            <EndProperty Name="employee">
+              <ScalarProperty Name="empID" ColumnName="id_comP" />
+            </EndProperty>
+            <EndProperty Name="project">
+              <ScalarProperty Name="projID" ColumnName="id_proj" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
