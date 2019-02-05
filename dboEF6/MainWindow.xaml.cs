@@ -15,6 +15,16 @@ namespace dboEF6
         Project_Manager = 4
     }
 
+    enum DilterData
+    {
+        dateMore = 0,
+        dateLess = 1,
+        dateEqually = 2,
+        priorityMore = 3,
+        priorityLess = 4,
+        priorityEqually = 5
+    }
+
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
@@ -26,6 +36,8 @@ namespace dboEF6
 
             comboBox.ItemsSource = Enum.GetValues(typeof(TableView)).Cast<TableView>();
             comboBox.SelectedIndex = 0;
+
+            comboBox1.ItemsSource= Enum.GetValues(typeof(DilterData)).Cast<DilterData>();
         }
 
         /// <summary>
@@ -69,6 +81,15 @@ namespace dboEF6
                 new ForTheTable_Project(bus.GetProject_Manager(a), bus.GetCompany_Customer(a),
                 bus.GetCompany_Performer(a), bus.GetEmployee(a));
             table.Show();
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            if (comboBox1.SelectedIndex == -1) return;
+
+            BusinessLogicClass bus = new BusinessLogicClass();
+
+            dataGrid.ItemsSource = bus.GetProjectFiltr(comboBox1.SelectedIndex, int.Parse(textBox.Text), (DateTime)calendar.SelectedDate);
         }
     }
 }

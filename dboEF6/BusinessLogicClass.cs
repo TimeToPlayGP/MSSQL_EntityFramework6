@@ -46,24 +46,24 @@ namespace dboEF6
         /// Например, скрывает id и внешнии ключи
         /// </summary>
         /// <returns>Данные таблицы компания-заказчик</returns>
-        public IEnumerable<companyCustomerViewTable> GetCompany_Customer(int a=-1)
+        public IEnumerable<companyCustomerViewTable> GetCompany_Customer(int a = -1)
         {
             GetData<companyCustomer> data = new GetData<companyCustomer>();
 
             list_companyCustomer = data.getTable();
 
             var result = list_companyCustomer.Select(comp => new companyCustomerViewTable
-                {
-                    Name = comp.name,
-                    Address = comp.address,
-                    email = comp.email
-                }).ToList();
+            {
+                Name = comp.name,
+                Address = comp.address,
+                email = comp.email
+            }).ToList();
 
             if (a == -1) return result;
 
             int id_project = list_project[a].projID;
 
-            List <companyCustomerViewTable> lists = new List<companyCustomerViewTable>();
+            List<companyCustomerViewTable> lists = new List<companyCustomerViewTable>();
 
             foreach (var companyC in list_companyCustomer)
             {
@@ -85,15 +85,15 @@ namespace dboEF6
         /// Например, скрывает id и внешнии ключи
         /// </summary>
         /// <returns>Данные таблицы компания-исполнитель</returns>
-        public IEnumerable<companyPerformerViewTable> GetCompany_Performer(int a=-1)
+        public IEnumerable<companyPerformerViewTable> GetCompany_Performer(int a = -1)
         {
             GetData<companyPerformer> data = new GetData<companyPerformer>();
 
             list_companyPerformer = data.getTable();
 
-            var result = list_companyPerformer.Select(comp=> new companyPerformerViewTable
+            var result = list_companyPerformer.Select(comp => new companyPerformerViewTable
             {
-                Name=comp.name,
+                Name = comp.name,
                 Address = comp.address,
                 email = comp.email,
                 WebSite = comp.WebSite
@@ -126,7 +126,7 @@ namespace dboEF6
         /// Например, скрывает id и внешнии ключи
         /// </summary>
         /// <returns>Данные таблицы сотрудник</returns>
-        public IEnumerable<employeeViewTable> GetEmployee(int a=-1)
+        public IEnumerable<employeeViewTable> GetEmployee(int a = -1)
         {
             GetData<employee> data = new GetData<employee>();
 
@@ -167,13 +167,13 @@ namespace dboEF6
         /// Например, скрывает id и внешнии ключи
         /// </summary>
         /// <returns>Данные таблицы руководитель проекта</returns>
-        public IEnumerable<projectManagerViewTable> GetProject_Manager(int a=-1)
+        public IEnumerable<projectManagerViewTable> GetProject_Manager(int a = -1)
         {
             GetData<projectManager> data = new GetData<projectManager>();
 
             list_projectManager = data.getTable();
 
-            var result = list_projectManager.Select(projm=>new projectManagerViewTable
+            var result = list_projectManager.Select(projm => new projectManagerViewTable
             {
                 Surname = projm.surname,
                 Name = projm.name,
@@ -202,7 +202,49 @@ namespace dboEF6
             }
             return lists;
         }
+
+        public IEnumerable<projectViewTable> GetProjectFiltr(int a, int value, DateTime time)
+        {
+            GetData<project> data = new GetData<project>();
+
+            list_project = data.getTable();
+
+            var result = list_project.Select(proj => new projectViewTable
+            {
+                Name = proj.name,
+                DateStart = proj.dateStart,
+                DateFinish = proj.dateFinish,
+                Priority = proj.priority,
+                Comment = proj.comment
+            }).ToList();
+
+            switch (a)
+            {
+                case 0:
+                    result = result.Where(i => (i.DateStart.Year > time.Year)
+            || (i.DateStart.Year == time.Year && i.DateStart.Month > time.Month)
+            || (i.DateStart.Year == time.Year && i.DateStart.Month == time.Month) && i.DateStart.Day > time.Day)
+            .ToList(); break;
+                case 1:
+                    result = result.Where(i => (i.DateStart.Year < time.Year)
+            || (i.DateStart.Year == time.Year && i.DateStart.Month < time.Month)
+            || (i.DateStart.Year == time.Year && i.DateStart.Month == time.Month) && i.DateStart.Day < time.Day)
+            .ToList(); break;
+                case 2:
+                    result = result.Where(i => 
+                    i.DateStart.Year == time.Year && 
+                    i.DateStart.Month == time.Month && 
+                    i.DateStart.Day == time.Day)
+            .ToList(); break;
+                case 3: result = result.Where(i => i.Priority > value).ToList(); break;
+                case 4: result = result.Where(i => i.Priority < value).ToList(); break;
+                case 5: result = result.Where(i => i.Priority == value).ToList(); break;
+            }
+
+            return result;
+        }
     }
+
 
     /// <summary>
     /// Данные для отображения таблицы проект

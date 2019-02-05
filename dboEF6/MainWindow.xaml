@@ -7,15 +7,19 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <DataGrid IsReadOnly="True"  AutoGenerateColumns="True"  Name="dataGrid" HorizontalAlignment="Left" Height="177" Margin="73,71,0,0" VerticalAlignment="Top" Width="403">
+        <DataGrid IsReadOnly="True"  AutoGenerateColumns="True"  Name="dataGrid" HorizontalAlignment="Left" Height="177" Margin="43,98,0,0" VerticalAlignment="Top" Width="714">
             <DataGrid.RowStyle>
                 <Style TargetType="{x:Type DataGridRow}">
                     <EventSetter Event="MouseDoubleClick" Handler="RowDoubleClick"/>
                 </Style>
             </DataGrid.RowStyle>
         </DataGrid>
-        <Button Click="button_Click" Name="button" Content="Button" HorizontalAlignment="Left" Height="48" Margin="419,310,0,0" VerticalAlignment="Top" Width="154"/>
-        <ComboBox Name="comboBox" HorizontalAlignment="Left" Height="35" Margin="573,71,0,0" VerticalAlignment="Top" Width="181"/>
+        <Button Click="button_Click" Name="button" Content="Button" HorizontalAlignment="Left" Height="35" Margin="292,37,0,0" VerticalAlignment="Top" Width="154"/>
+        <ComboBox Name="comboBox" HorizontalAlignment="Left" Height="35" Margin="43,37,0,0" VerticalAlignment="Top" Width="181"/>
+        <ComboBox x:Name="comboBox1" HorizontalAlignment="Left" Height="40" Margin="43,317,0,0" VerticalAlignment="Top" Width="181"/>
+        <Button Click="button1_Click" x:Name="button1" Content="Фильтровать" HorizontalAlignment="Left" Height="40" Margin="592,317,0,0" VerticalAlignment="Top" Width="154"/>
+        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="40" Margin="254,317,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="154"/>
+        <Calendar Name="calendar" HorizontalAlignment="Left" Height="189" Margin="437,168,0,0" VerticalAlignment="Top" Width="172"/>
 
     </Grid>
 </Window>
