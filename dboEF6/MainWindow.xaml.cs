@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using dboEF6.interconnected_tables;
 
 namespace dboEF6
 {
@@ -12,8 +14,6 @@ namespace dboEF6
         Employee = 3,
         Project_Manager = 4
     }
-
-
 
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
@@ -28,6 +28,13 @@ namespace dboEF6
             comboBox.SelectedIndex = 0;
         }
 
+        /// <summary>
+        /// Событие нажатия на кнопку показа таблиц
+        /// Таблица выбирается по позиции comboBox, где индекс 
+        /// сравнивается со значением перечисления TableView
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_Click(object sender, RoutedEventArgs e)
         {
             BusinessLogicClass bus = new BusinessLogicClass();
@@ -40,6 +47,28 @@ namespace dboEF6
                 case (int)TableView.Employee: dataGrid.ItemsSource = bus.GetEmployee(); break;
                 case (int)TableView.Project_Manager: dataGrid.ItemsSource = bus.GetProject_Manager(); break;
             }
+        }
+
+        /// <summary>
+        /// Открытие новой формы по двойному щелчку 
+        /// для показа доп.информации о таблице ПРОЕКТ,
+        /// щелчок производится по строке в таблице
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RowDoubleClick(object sender, RoutedEventArgs e)
+        {
+            if (comboBox.SelectedIndex != (int)TableView.Project) return;
+
+            BusinessLogicClass bus = new BusinessLogicClass();
+
+            var row = (DataGridRow)sender;
+            int a = row.GetIndex();
+
+            ForTheTable_Project table =
+                new ForTheTable_Project(bus.GetProject_Manager(a), bus.GetCompany_Customer(a),
+                bus.GetCompany_Performer(a), bus.GetEmployee(a));
+            table.Show();
         }
     }
 }
